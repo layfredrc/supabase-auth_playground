@@ -34,7 +34,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
             </div>
 
             <div className='grid gap-3'>
-              <Label htmlFor='email'>Password</Label>
+              <Label htmlFor='password'>Password</Label>
               <Input id='password' name='password' type='password' required />
             </div>
 

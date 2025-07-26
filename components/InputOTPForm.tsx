@@ -16,6 +16,8 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/utils/supabase/client'
 
 const FormSchema = z.object({
   pin: z.string().min(6, {
@@ -23,7 +25,13 @@ const FormSchema = z.object({
   }),
 })
 
-export function InputOTPForm() {
+type InputOTPFormProps = {
+  email: string | null
+}
+
+export function InputOTPForm({ email }: InputOTPFormProps) {
+  const router = useRouter()
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -31,14 +39,26 @@ export function InputOTPForm() {
     },
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast('You submitted the following values', {
-      description: (
-        <pre className='mt-2 w-[320px] rounded-md bg-neutral-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    if (!email) {
+      toast.error('Email is missing. Please try logging in again.')
+      router.push('/login')
+      return
+    }
+
+    const supabase = createClient()
+    const { error } = await supabase.auth.verifyOtp({
+      email,
+      token: data.pin,
+      type: 'email',
     })
+
+    if (error) {
+      toast.error(error.message || 'Invalid OTP.')
+    } else {
+      toast.success('Logged in!')
+      router.push('/dashboard')
+    }
   }
 
   return (

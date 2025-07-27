@@ -63,7 +63,10 @@ export function InputOTPForm({ email }: InputOTPFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='w-2/3 space-y-6'>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='mx-auto flex w-full max-w-md flex-col items-center space-y-6 text-center'
+      >
         <FormField
           control={form.control}
           name='pin'
@@ -71,14 +74,36 @@ export function InputOTPForm({ email }: InputOTPFormProps) {
             <FormItem>
               <FormLabel>One-Time Password</FormLabel>
               <FormControl>
-                <InputOTP maxLength={6} {...field}>
+                <InputOTP
+                  maxLength={6}
+                  containerClassName='justify-center'
+                  {...field}
+                >
                   <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
+                    <InputOTPSlot
+                      index={0}
+                      className='h-12 w-12 text-lg'
+                    />
+                    <InputOTPSlot
+                      index={1}
+                      className='h-12 w-12 text-lg'
+                    />
+                    <InputOTPSlot
+                      index={2}
+                      className='h-12 w-12 text-lg'
+                    />
+                    <InputOTPSlot
+                      index={3}
+                      className='h-12 w-12 text-lg'
+                    />
+                    <InputOTPSlot
+                      index={4}
+                      className='h-12 w-12 text-lg'
+                    />
+                    <InputOTPSlot
+                      index={5}
+                      className='h-12 w-12 text-lg'
+                    />
                   </InputOTPGroup>
                 </InputOTP>
               </FormControl>
